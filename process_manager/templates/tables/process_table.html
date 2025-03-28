@@ -1,0 +1,62 @@
+{% load static %}
+
+<h3 class="text-3xl font-bold text-gray-800 mb-6">Snapshot details (ID: {{ snapshot.pk }})</h3>
+
+
+<table pagination="true" id="process-table" class="min-w-full bg-white border-collapse display">
+    <thead>
+    <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+        <!-- Każda kolumna sortowalna ma data-sort="none" na start -->
+
+        <th sortable="true"
+            filterable="true"
+            filter-type="text"
+            filter-placeholder="Szukaj PID"
+            class="py-3 px-6 text-left">
+            PID
+        </th>
+
+
+        <th sortable="true" filterable="true" filter-type="select"
+            filter-options=":Choose status,running:Running,stopped:Stopped,paused:Paused,terminated:Terminated"
+            class="py-3 px-6 text-left">
+            Status
+        </th>
+
+        <th class="py-3 px-6 text-left">
+            Start Time
+        </th>
+        <th class="py-3 px-6 text-left">
+            Duration
+        </th>
+        <th sortable="true" filterable="true" filter-type="text" filter-placeholder="Szukaj nazwy"
+            class="py-3 px-6 text-left">
+            Name
+        </th>
+
+        <th sortable="true" class="py-3 px-6 text-left">
+            Memory Usage
+        </th>
+        <th sortable="true" class="py-3 px-6 text-left">
+            CPU Usage [%]
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for process in processes %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6">{{ process.pid }}</td>
+            <td class="py-3 px-6" id="kill-result-container-{{ process.pid }}">{{ process.status }}</td>
+            <td class="py-3 px-6">{{ process.start_time }}</td>
+            <td class="py-3 px-6">{{ process.duration }}</td>
+            <td class="py-3 px-6">{{ process.name }}</td>
+            <td class="py-3 px-6">{{ process.formatted_memory_usage }}</td>
+            <td class="py-3 px-6">{{ process.cpu_usage }}</td>
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+

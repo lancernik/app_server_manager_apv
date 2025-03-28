@@ -1,0 +1,31 @@
+<!-- partials/processes_chart.html -->
+<div id="processesChartDiv" style="height: 380px;"></div>
+
+<script>
+    var dataSnapshots = [
+        {% for snapshot in system_snapshots %}
+            {
+                created: "{{ snapshot.created|date:'Y-m-d H:i:s' }}",
+                processes: {{ snapshot.get_total_processes_count }}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    var xValues = dataSnapshots.map(item => item.created);
+    var yValues = dataSnapshots.map(item => item.processes);
+
+    var traceProcesses = {
+        x: xValues,
+        y: yValues,
+        mode: 'lines+markers',
+        name: 'Processes Count'
+    };
+
+    var layoutProcesses = {
+        title: 'Processes Count Over Time',
+        xaxis: {title: 'Timestamp', type: 'date'},
+        yaxis: {title: 'Processes'}
+    };
+
+    Plotly.newPlot('processesChartDiv', [traceProcesses], layoutProcesses);
+</script>

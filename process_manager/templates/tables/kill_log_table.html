@@ -1,0 +1,30 @@
+<table class="w-full">
+    <thead class="bg-gray-50">
+    <tr>
+        <th class="py-3 px-6 text-left" sortable="true">ID</th>
+        <th class="py-3 px-6 text-left" sortable="true">Timestamp</th>
+        <th class="py-3 px-6 text-left" sortable="true" filterable="true" filter-type="text"
+            filter-placeholder="Search author">Author
+        </th>
+        <th class="py-3 px-6 text-left" sortable="true" filterable="true" filter-type="text"
+            filter-placeholder="Search name">Process name
+        </th>
+    </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+    {% for kill_log in killed_logs %}
+        <tr>
+            <td>{{ kill_log.pk }}</td>
+            <td class="py-3 px-6">
+                {{ kill_log.created|date:'y-m-d | G:i' }}
+            </td>
+            <td class="py-3 px-6">
+                {{ kill_log.author }}
+            </td>
+            <td class="py-3 px-6">
+                {{ kill_log.name }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>

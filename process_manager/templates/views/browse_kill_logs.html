@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center" >Browse kill log entries</h2>
+    <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+    {% include 'tables/kill_log_table.html' %}
+
+
+
+
+
+
+
+{% endblock %}

@@ -1,0 +1,32 @@
+<!-- partials/cpu_chart.html -->
+<!-- Zakładamy, że biblioteka Plotly jest już załadowana w layoucie głównym -->
+<div id="cpuChartDiv" style="height: 380px;"></div>
+
+<script>
+    var dataSnapshots = [
+        {% for snapshot in system_snapshots %}
+            {
+                created: "{{ snapshot.created|date:'Y-m-d H:i:s' }}",
+                cpu: {{ snapshot.get_total_cpu_usage }}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    var xValues = dataSnapshots.map(item => item.created);
+    var yValues = dataSnapshots.map(item => item.cpu);
+
+    var traceCPU = {
+        x: xValues,
+        y: yValues,
+        mode: 'lines+markers',
+        name: 'CPU Usage'
+    };
+
+    var layoutCPU = {
+        title: 'CPU Usage Over Time',
+        xaxis: {title: 'Timestamp', type: 'date'},
+        yaxis: {title: 'CPU Usage [%]'}
+    };
+
+    Plotly.newPlot('cpuChartDiv', [traceCPU], layoutCPU);
+</script>

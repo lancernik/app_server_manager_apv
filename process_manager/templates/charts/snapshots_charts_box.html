@@ -1,0 +1,52 @@
+<!-- Pole wyboru wykresu -->
+<label for="chartSelector" class="block text-sm font-medium text-gray-700 mb-2">
+    Select chart:
+</label>
+<select id="chartSelector"
+        class="mt-1 block w-full pl-3 pr-10 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+    <option value="">---</option>
+    <option value="{% url 'get_chart_for_cpu' %}">CPU Usage over time</option>
+    <option value="{% url 'get_chart_for_memory' %}">Memory Usage over time</option>
+    <option value="{% url 'get_chart_for_processes' %}">Number of running processes over time</option>
+</select>
+
+<!-- Miejsce, w które wstawimy odpowiedni partial z wykresem -->
+<div id="chartContainer" style="margin-top: 20px; width: 100%;"></div>
+
+<!-- Skrypt do obsługi zmiany opcji (HTMX) -->
+<script>
+    const chartSelector = document.getElementById('chartSelector');
+    const chartContainer = document.getElementById('chartContainer');
+
+    chartSelector.addEventListener('change', function (e) {
+        let url = e.target.value;
+        if (!url) {
+            return;
+        }
+        // Wyświetlenie komunikatu o ładowaniu danych
+        chartContainer.innerHTML = '<p>Loading data...</p>';
+        // Zablokowanie możliwości zmiany wykresu
+        chartSelector.disabled = true;
+
+        // Wywołanie żądania POST przez HTMX
+        htmx.ajax('POST', url, {
+            target: '#chartContainer',
+            swap: 'innerHTML'
+        });
+    });
+
+    // Po zakończeniu operacji HTMX odblokowujemy selektor
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.detail.target.id === 'chartContainer') {
+            chartSelector.disabled = false;
+        }
+    });
+
+    // Obsługa błędów podczas żądania
+    document.body.addEventListener('htmx:responseError', function (event) {
+        if (event.detail.target.id === 'chartContainer') {
+            chartContainer.innerHTML = '<p>An error occurred while loading the chart.</p>';
+            chartSelector.disabled = false;
+        }
+    });
+</script>

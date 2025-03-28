@@ -1,0 +1,49 @@
+
+    <table id="process-table" class="min-w-full bg-white border-collapse display">
+        <thead>
+        <tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+            <!-- Każda kolumna sortowalna ma data-sort="none" na start -->
+
+            <th sortable="true" filterable="true" filter-type="text" filter-placeholder="Serach PID"
+                class="py-3 px-6 text-left">
+                PID
+            </th>
+
+
+            <th sortable="true" filterable="true" filter-type="select"
+                filter-options=":Choose status,running:Running,stopped:Stopped,paused:Paused,terminated:Terminated"
+                class="py-3 px-6 text-left">
+                Status
+            </th>
+
+            <th class="py-3 px-6 text-left">
+                Start Time
+            </th>
+            <th class="py-3 px-6 text-left">
+                Duration
+            </th>
+            <th sortable="true" filterable="true" filter-type="text" filter-placeholder="Serach name"
+                class="py-3 px-6 text-left">
+                Name
+            </th>
+
+            <th sortable="true" class="py-3 px-6 text-left">
+                Memory Usage
+            </th>
+            <th sortable="true" class="py-3 px-6 text-left">
+                CPU Usage [%]
+            </th>
+            <th class="py-3 px-6 text-left">
+                Action
+            </th>
+        </tr>
+        </thead>
+        <tbody id="process-table-data" class="text-gray-700 text-sm"
+               hx-get="{% url 'refresh_processes_table' %}"
+               hx-trigger="load, every 30s"
+               hx-target="#process-table-data"
+        >
+
+        </tbody>
+    </table>
+

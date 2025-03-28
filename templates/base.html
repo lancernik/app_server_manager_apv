@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Browse Processes</title>
+    <script src="https://unpkg.com/htmx.org"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <meta name="csrf-token" content="{{ csrf_token }}">
+</head>
+<body class="bg-gray-100 min-h-screen p-6">
+
+<nav class="bg-white shadow-md rounded-lg mb-6 p-4">
+    <ul class="flex justify-around">
+        <li>
+            <a href="{% url 'browse_processes' %}"
+               class="font-semibold text-lg text-gray-700 hover:text-blue-600 transition duration-300 ease-in-out
+                      {% if menu_selected == 'browse_processes' %}text-blue-600 border-b-2 border-blue-600 pb-1{% endif %}">
+                Current process
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'browse_snapshots' %}"
+               class="font-semibold text-lg text-gray-700 hover:text-blue-600 transition duration-300 ease-in-out
+                      {% if menu_selected == 'browse_snapshots' %}text-blue-600 border-b-2 border-blue-600 pb-1{% endif %}">
+                Browse snapshots
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'browse_kill_logs' %}"
+               class="font-semibold text-lg text-gray-700 hover:text-blue-600 transition duration-300 ease-in-out
+                      {% if menu_selected == 'browse_kill_logs' %}text-blue-600 border-b-2 border-blue-600 pb-1{% endif %}">
+                Kill log entries
+            </a>
+        </li>
+    </ul>
+</nav>
+
+
+{% block content %}{% endblock %}
+
+<script src="{% static 'js/custom_sorting.js' %}"></script>
+<script src="{% static 'js/custom_filters.js' %}"></script>
+{#<script src="{% static 'js/custom_pagination.js' %}"></script>#}
+<script src="{% static 'js/table_refresh_counter.js' %}"></script>
+<script src="{% static 'js/button_utils.js' %}"></script>
+
+<script>
+    document.body.addEventListener("htmx:configRequest", function (event) {
+        // Sprawdź, czy metoda to POST
+        if (event.detail.verb && event.detail.verb.toUpperCase() === "POST") {
+            const tokenElement = document.querySelector('meta[name="csrf-token"]');
+            if (tokenElement) {
+                const csrfToken = tokenElement.getAttribute("content");
+                event.detail.headers["X-CSRFToken"] = csrfToken;
+            } else {
+                console.error("CSRF token not found in meta tag!");
+            }
+        }
+    });
+</script>
+
+
+<link rel="stylesheet" href="{% static 'css/basic.css' %}">
+
+</body>
+</html>

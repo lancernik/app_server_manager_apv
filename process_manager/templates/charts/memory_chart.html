@@ -1,0 +1,31 @@
+<!-- partials/memory_chart.html -->
+<div id="memoryChartDiv" style="height: 380px;"></div>
+
+<script>
+    var dataSnapshots = [
+        {% for snapshot in system_snapshots %}
+            {
+                created: "{{ snapshot.created|date:'Y-m-d H:i:s' }}",
+                memory: {{ snapshot.get_total_memory_usage }}
+            }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ];
+
+    var xValues = dataSnapshots.map(item => item.created);
+    var yValues = dataSnapshots.map(item => item.memory);
+
+    var traceMemory = {
+        x: xValues,
+        y: yValues,
+        mode: 'lines+markers',
+        name: 'Memory Usage'
+    };
+
+    var layoutMemory = {
+        title: 'Memory Usage Over Time',
+        xaxis: {title: 'Timestamp', type: 'date'},
+        yaxis: {title: 'Memory Usage [GB]'}
+    };
+
+    Plotly.newPlot('memoryChartDiv', [traceMemory], layoutMemory);
+</script>

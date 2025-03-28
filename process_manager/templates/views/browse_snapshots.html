@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+
+    {% if system_snapshots %}
+        <h2 class="text-3xl font-bold text-gray-800 mb- text-center">Browse snapshots</h2>
+        <hr class="h-px my-8 bg-gray-200 border-0 dark:bg-gray-700">
+        <div class="flex">
+            <!-- Lewy div z tabelką snapshotów -->
+            <div class="w-1/2 p-4 max-h-[500px] overflow-auto">
+                {% include 'tables/snapshots_table.html' %}
+            </div>
+            <!-- Prawy div z wykresem -->
+            <div class="w-1/2 p-4 max-h-[500px] overflow-auto">
+                <!-- Wybór typu wykresu -->
+                {% include 'charts/snapshots_charts_box.html' %}
+            </div>
+        </div>
+
+        <hr class="border-t border-gray-300 my-4">
+
+        <div id="snapshot_details">
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">Snapshot details</h3>
+            Click "Details" on any snapshot to display details
+        </div>
+
+
+    {% else %}
+        <h3 class="text-3xl font-bold text-gray-800 mb-6">No snapshots available to view</h3>
+    {% endif %}
+
+
+
+
+
+
+{% endblock %}

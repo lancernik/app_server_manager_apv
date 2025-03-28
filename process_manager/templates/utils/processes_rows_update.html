@@ -1,0 +1,28 @@
+{% for process in processes %}
+    {% if process.pid != 0 %}
+        <tr class="border-b border-gray-200 hover:bg-gray-100">
+            <td class="py-3 px-6">{{ process.pid }}</td>
+            <td class="py-3 px-6" id="kill-result-container-{{ process.pid }}">{{ process.status }}</td>
+            <td class="py-3 px-6">{{ process.start_time|date:'Y-m-d H:i:s' }}</td>
+            <td class="py-3 px-6">{{ process.duration }}</td>
+            <td class="py-3 px-6">{{ process.name }}</td>
+            <td class="py-3 px-6">{{ process.memory_usage }}</td>
+            <td class="py-3 px-6">{{ process.cpu_usage }}</td>
+            <td class="py-3 px-6">
+                {% if process.pid and process.name %}
+                    <form
+                            hx-post="{% url 'kill_process' process.pid process.name %}"
+                            hx-target="#kill-result-container-{{ process.pid }}"
+                            hx-on::before-request="showSpinner(this);"
+                            hx-on::after-request="hideSpinner(this); markPerformed(this); handleResponse(this, event.detail.xhr.response);">
+                        <button
+                                type="submit"
+                                class="px-4 py-2 bg-transparent border border-red-500 text-red-500 hover:bg-red-500 hover:text-white font-semibold rounded disabled:opacity-50 disabled:cursor-not-allowed transition duration-300 ease-in-out">
+                            Kill process
+                        </button>
+                    </form>
+                {% endif %}
+            </td>
+        </tr>
+    {% endif %}
+{% endfor %}
