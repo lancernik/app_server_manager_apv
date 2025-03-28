@@ -12,8 +12,6 @@
 - Virtualenv
 - Poetry
 
-https://docs.google.com/document/d/19MyOS0zblQ0VwOaxu6iRE_wqpx3NT8vm/edit?usp=sharing&ouid=113492287543668581143&rtpof=true&sd=true
-
 ## Environment Setup
 
 1. Create a virtual environment:
